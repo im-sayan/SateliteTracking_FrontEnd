@@ -1,0 +1,296 @@
+/* ==========================
+   🌍 Map Container
+   ========================== */
+   #globeContainer {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background-color: #1e1e1e; /* Subtle darker background */
+  }
+  
+  /* ==========================
+     🟢 Navbar
+     ========================== */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 10px;
+    background-color: #111;  /* Darker background */
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);  /* Enhanced shadow */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .nav-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .filter-button {
+    margin-left: auto;
+    color: #f3f3f3;
+    background: rgba(255, 255, 255, 0.2); /* Slightly lighter background */
+    border: none;
+    padding: 5px 14px;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out, transform 0.2s ease;
+  }
+  
+  .filter-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);  /* Slight scaling effect */
+  }
+
+  .satellite-count {
+    font-size: 1rem;
+    flex-grow: 1; /* Pushes content apart */
+    text-align: center;
+  }
+
+  .satellite-number {
+    color: #5eff00; /* Change this to your desired color */
+    font-weight: bold;
+  }
+  
+  
+  /* ==========================
+     ⏳ Loader (Loading Screen)
+     ========================== */
+  .loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);  /* Slightly darker background */
+    z-index: 1000;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 15px;
+  }
+  
+  .spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #1e90ff;  /* Blue spinner */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+  }
+  
+  .loading-text {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+    animation: fadeIn 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+  }
+  
+  /* ==========================
+     🛰️ Satellite Info Popup
+     ========================== */
+  .satellite-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 18px;
+    border-radius: 12px;
+    display: none;
+    z-index: 9999;
+    max-width: 280px;
+    box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .satellite-popup h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .satellite-popup p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #b0bec5;
+  }
+  
+  /* ==========================
+     📜 Filter Menu
+     ========================== */
+  /* Floating popup */
+.filter-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background: rgba(245, 245, 245, 0.805);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+}
+
+/* Filter List */
+.filter-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Filter Item */
+.filter-item {
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+  
+  /* ==========================
+     🔄 Pagination
+     ========================== */
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .pagination-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background 0.3s, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);  /* Scaling effect on hover */
+  }
+  
+  .page-info {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  /* ==========================
+     🔘 Buttons and Interaction
+     ========================== */
+  button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  button:hover:not(:disabled) {
+    transform: scale(1.05);  /* Slight scaling effect */
+  }
+  
+  /* ==========================
+     📱 Responsive Design Tweaks
+     ========================== */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .filter-button {
+      width: 100%;
+      margin-top: 10px;
+    }
+  
+    .satellite-popup {
+      bottom: 10px;
+      left: 10px;
+      max-width: 90%;
+    }
+  
+    .custom-menu {
+      width: 100%;
+      max-width: 280px;
+    }
+  
+    .menu-content {
+      max-height: 180px;
+    }
+  }
+  
+/* ==========================
+     ⚠️ Error
+     ========================== */
+
+  .error-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ff4444;
+    font-weight: bold;
+    background: rgba(255, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .error-icon {
+    font-size: 1.5rem;
+  }

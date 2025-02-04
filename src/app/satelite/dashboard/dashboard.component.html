@@ -1,0 +1,80 @@
+<nav class="navbar">
+  <h5 class="nav-title">Satellite Tracking</h5>
+
+  <h5 class="satellite-count">
+    Currently [ <span class="satellite-number">{{selectedSatelite.length}}</span> ] satellites on map
+  </h5>
+  
+
+  <button (click)="openFilterPopup()" class="filter-button">
+    <fa-icon [icon]="faFilter"></fa-icon>
+  </button>
+</nav>
+
+
+<!-- Floating Filter Popup (Styled as a List) -->
+<div class="filter-popup" *ngIf="isFilterPopupVisible">
+  <div class="popup-content">
+    <h2>Filter Options</h2>
+
+    <ul class="filter-list">
+      <li *ngFor="let filter of list" class="filter-item">
+        <mat-checkbox 
+          (change)="selectSTA(filter)" 
+          [checked]="selectedSatelite.includes(filter)">
+          {{ filter }}
+        </mat-checkbox>
+      </li>
+    </ul>
+    
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls" *ngIf="list.length > pageSize">
+      <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button mat-icon-button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="popup-buttons">
+      <button mat-button color="primary" (click)="applyFilters()">Apply</button>
+      <button mat-button color="warn" (click)="clearFilters()" style="color: rgb(211, 0, 0);">Clear All</button>
+    </div>
+
+    <button mat-icon-button class="close-button" (click)="closeFilterPopup()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+
+
+
+<div class="content-container">
+  <div id="globeContainer">
+    <div id="satellitePopup" class="satellite-popup">
+      <!-- This will be populated dynamically -->
+       
+    </div>
+    <div *ngIf="serverError" class="error-message">
+      <span class="error-icon">⚠️</span> <!-- Or use FontAwesome -->
+      <span class="error-text">Server Error (500): Unable to fetch TLE data. Please try again later.</span>
+    </div>
+    
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="loader">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading TLE Data...</span>
+  </div>
+
+
+  <!-- Satellite Filter Dropdown -->
+ 
+</div>
+
+
