@@ -34,7 +34,7 @@
     </ul>
 
     <!-- Pagination Controls -->
-    <div class="pagination-controls" *ngIf="list.length > pageSize">
+    <div class="pagination-controls" *ngIf="list?.length > pageSize">
       <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
         <mat-icon>chevron_left</mat-icon>
       </button>

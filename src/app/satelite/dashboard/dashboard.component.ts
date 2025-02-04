@@ -6,7 +6,7 @@ import {
   ElementRef,
   Renderer2,
 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpParams } from '@angular/common/http';
 import * as satellite from 'satellite.js';
 // import Map from 'ol/Map';
 import View from 'ol/View';
@@ -42,7 +42,7 @@ import nominatim from 'nominatim-browser';
 import { ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-
+import {environment} from '../../../ENV/env'
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -165,8 +165,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
               positionAndVelocity.velocity
             ) {
               const { position, velocity } = positionAndVelocity;
-              console.log(position, 'position');
-              console.log(velocity, 'velocity');
 
               // Type guard to check if position is a valid EciVec3<number>
               if (
@@ -224,7 +222,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (geometry instanceof Point) {
       const coordinates = geometry.getCoordinates();
       const lonLat = toLonLat(coordinates); // Convert to longitude/latitude
-      console.log('Satellite coordinates:', lonLat);
 
       // Add your code here to show a popup or other details about the feature
     } else {
@@ -286,8 +283,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   selectSTA(item: any) {
-    console.log(item, "item");
-  
     // Check if item is already selected
     const index = this.selectedSatelite.indexOf(item);
     
@@ -298,8 +293,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       // ✅ Otherwise, add it
       this.selectedSatelite.push(item);
     }
-  
-    console.log(this.selectedSatelite, "this.selectedSatelite");
   }
   
   clearFilters() {
@@ -313,11 +306,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchTLEData(): void {
-    const tleUrl = 'https://satelitetracking-backend.onrender.com/satelite/track';
+    const tleUrl = `${environment.apiURL}/satelite/track`;
 
     this.isLoading = true; // Set loading to true before fetching
     let satelliteIds = this.selectedSatelite;
-    console.log(satelliteIds, 'satelliteIds');
     this.http
       .post(tleUrl, { satelliteIds }, { responseType: 'json' })
       .subscribe({
@@ -325,7 +317,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           // Change to 'any' to handle the response properly
           this.tleData = data.filteredData;
           this.list = data.list;
-          console.log(this.tleData, 'this.tleData');
           this.isFilterPopupVisible = false;
           this.trackAllSatellites(data);
           this.isLoading = false; // Set loading to false after successful fetch
@@ -338,25 +329,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchListData(page: number = 1, limit: number = 10): void {
-    const tleUrl = `https://satelitetracking-backend.onrender.com/satelite/list?page=${page}&limit=${limit}`;
-
-    this.isLoading2 = true; // Set loading to true before fetching
+    const apiUrl = `${environment.apiURL}/satelite/list`; // Dynamic base URL from env
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+  
+    const tleUrl = `${apiUrl}?${params.toString()}`;
+  
+    this.isLoading2 = true; // Show loader before fetching
+  
     this.http.get(tleUrl).subscribe({
       next: (data: any) => {
-        this.list = data.list; // Update the list of satellite names
-        this.totalPages = data.totalPages; // Update total pages
-        this.totalItems = data.totalItems; // Update total items count
-        this.currentPage = data.page; // Update the current page
-        this.itemsPerPage = data.limit; // Update the limit (items per page)
-        //this.updatePagination(); // Call method to update pagination UI
-        this.isLoading2 = false; // Set loading to false after successful fetch
+        this.list = data.list || []; // Ensure list is an array
+        this.totalPages = data.totalPages ?? 0; // Handle undefined values
+        this.totalItems = data.totalItems ?? 0;
+        this.currentPage = data.page ?? 1;
+        this.itemsPerPage = data.limit ?? limit;
+        this.isLoading2 = false; // Hide loader on success
       },
       error: (error) => {
         console.error('Failed to fetch list data:', error);
-        //this.isLoading = false; // Set loading to false even if there's an error
+        this.isLoading2 = false; // Hide loader on error
       },
     });
   }
+  
 
   openFilterPopup() {
     this.isFilterPopupVisible = true;
