@@ -17,6 +17,12 @@
   <div class="popup-content">
     <h2>Filter Options</h2>
 
+    <!-- Loader Overlay -->
+    <div class="loader-overlay" *ngIf="isLoading2">
+      <div class="custom-loader"></div>
+    </div>
+
+    <!-- Filter List -->
     <ul class="filter-list">
       <li *ngFor="let filter of list" class="filter-item">
         <mat-checkbox 
@@ -26,14 +32,13 @@
         </mat-checkbox>
       </li>
     </ul>
-    
 
     <!-- Pagination Controls -->
     <div class="pagination-controls" *ngIf="list.length > pageSize">
       <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
         <mat-icon>chevron_left</mat-icon>
       </button>
-      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
       <button mat-icon-button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
         <mat-icon>chevron_right</mat-icon>
       </button>
@@ -49,6 +54,8 @@
     </button>
   </div>
 </div>
+
+
 
 
 

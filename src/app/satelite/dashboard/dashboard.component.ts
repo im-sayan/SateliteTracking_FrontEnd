@@ -56,6 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private satelliteFeatures: Feature[] = [];
   //private vectorSource!: VectorSource;
   isLoading: boolean = true;
+  isLoading2: boolean = true;
   private updateInterval!: Subscription;
   isNight: boolean = false;
   geolocation: Geolocation | undefined;
@@ -312,7 +313,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchTLEData(): void {
-    const tleUrl = 'http://localhost:8000/satelite/track';
+    const tleUrl = 'https://satelitetracking-backend.onrender.com/satelite/track';
 
     this.isLoading = true; // Set loading to true before fetching
     let satelliteIds = this.selectedSatelite;
@@ -337,9 +338,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchListData(page: number = 1, limit: number = 10): void {
-    const tleUrl = `http://localhost:8000/satelite/list?page=${page}&limit=${limit}`;
+    const tleUrl = `https://satelitetracking-backend.onrender.com/satelite/list?page=${page}&limit=${limit}`;
 
-    //this.isLoading = true; // Set loading to true before fetching
+    this.isLoading2 = true; // Set loading to true before fetching
     this.http.get(tleUrl).subscribe({
       next: (data: any) => {
         this.list = data.list; // Update the list of satellite names
@@ -348,7 +349,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.currentPage = data.page; // Update the current page
         this.itemsPerPage = data.limit; // Update the limit (items per page)
         //this.updatePagination(); // Call method to update pagination UI
-        //this.isLoading = false; // Set loading to false after successful fetch
+        this.isLoading2 = false; // Set loading to false after successful fetch
       },
       error: (error) => {
         console.error('Failed to fetch list data:', error);
