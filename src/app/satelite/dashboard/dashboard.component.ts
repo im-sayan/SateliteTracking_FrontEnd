@@ -6,7 +6,7 @@ import {
   ElementRef,
   Renderer2,
 } from '@angular/core';
-import { HttpClient,HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import * as satellite from 'satellite.js';
 // import Map from 'ol/Map';
 import View from 'ol/View';
@@ -36,13 +36,13 @@ import L from 'leaflet';
 
 import { fromLonLat, toLonLat } from 'ol/proj'; // Import toLonLat
 import { Map } from 'ol'; // Import Map class
-import { click,pointerMove } from 'ol/events/condition';
+import { click, pointerMove } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
 import nominatim from 'nominatim-browser';
 import { ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import {environment} from '../../../ENV/env'
+import { environment } from '../../../ENV/env';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -60,12 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private updateInterval!: Subscription;
   isNight: boolean = false;
   geolocation: Geolocation | undefined;
-  selectedSatelite: any = [
-    'ISS (ZARYA)',
-    'STARLINK-1522',
-    'NOAA 15',
-    'NSS-11',
-  ];
+  selectedSatelite: any = ['ISS (ZARYA)', 'STARLINK-1522', 'NOAA 15', 'NSS-11'];
   list: any;
   selectedFeature: Feature | null = null;
 
@@ -91,7 +86,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeMap();
     this.fetchTLEData();
-    
   }
 
   initializeMap(): void {
@@ -218,7 +212,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-
   showFeatureInfo(feature: Feature) {
     const geometry = feature.getGeometry();
 
@@ -289,7 +282,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   selectSTA(item: any) {
     // Check if item is already selected
     const index = this.selectedSatelite.indexOf(item);
-    
+
     if (index > -1) {
       // ❌ If already selected, remove it
       this.selectedSatelite.splice(index, 1);
@@ -298,13 +291,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.selectedSatelite.push(item);
     }
   }
-  
+
   clearFilters() {
     this.selectedSatelite = []; // ✅ Clear all selections
-     this.list.forEach((f: any) => f.selected = false);
+    this.list.forEach((f: any) => (f.selected = false));
     this.fetchTLEData();
   }
-  
+
   applyFilters() {
     this.fetchTLEData();
   }
@@ -338,11 +331,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
-  
+
     const tleUrl = `${apiUrl}?${params.toString()}`;
-  
+
     this.isLoading2 = true; // Show loader before fetching
-  
+
     this.http.get(tleUrl).subscribe({
       next: (data: any) => {
         this.list = data.list || []; // Ensure list is an array
@@ -358,7 +351,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       },
     });
   }
-  
 
   openFilterPopup() {
     this.isFilterPopupVisible = true;
@@ -373,14 +365,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.currentPage > 0) {
       this.currentPage--;
     }
-    this.fetchListData(this.currentPage)
+    this.fetchListData(this.currentPage);
   }
 
   nextPage() {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
     }
-    this.fetchListData(this.currentPage)
+    this.fetchListData(this.currentPage);
   }
 
   updatePagination() {
@@ -536,50 +528,54 @@ export class DashboardComponent implements OnInit, OnDestroy {
     height: number,
     speed: number
   ): void {
-    // Convert the coordinates back to longitude and latitude if needed
+    // Check for invalid coordinates
+    if (isNaN(lonLat[0]) || isNaN(lonLat[1])) {
+      console.error("Invalid coordinates: ", lonLat);
+      return; // Exit the function if coordinates are not valid
+    }
+  
+    let latitude = (lonLat[1]).toFixed(2); // Latitude is the second value in lonLat
+    let longitude = (lonLat[0]).toFixed(2); // Longitude is the first value in lonLat
+  
+    // Popup content
     const popupContent = `
       <div>
-      <button onclick="document.getElementById('satellitePopup').style.display='none'" 
-          style="
-            position: absolute; 
-            top: 8px; 
-            right: 10px; 
-            border: none; 
-            background: #ff4d4d; 
-            color: white; 
-            font-size: 14px; 
-            cursor: pointer; 
-            border-radius: 50%; 
-            width: 24px; 
-            height: 24px;
-            text-align: center;
-            line-height: 20px;
-            font-weight: bold;
-          ">
-          ✖
-        </button>
-        <h3 style="margin-top: 0; font-size: 18px; color: white;">🚀 ${satelliteName}</h3>
-        <p style="margin: 5px 0; font-size: 14px;"><strong>🌍 Latitude: </strong> ${
-          lonLat[1]
-        }</p>
-        <p style="margin: 5px 0; font-size: 14px;"><strong>📍 Longitude: </strong> ${
-          lonLat[0]
-        }</p>
-        <p style="margin: 5px 0; font-size: 14px;"><strong>🛰️ Height: </strong> ${height.toFixed(
-          2
-        )} km</p> 
-        <p style="margin: 5px 0; font-size: 14px;"><strong>⚡ Speed: </strong> ${speed.toFixed(
-          2
-        )} km/h</p>
-      </div>
+        <button onclick="document.getElementById('satellitePopup').style.display='none'" 
+            style="
+              position: absolute; 
+              top: 8px; 
+              right: 10px; 
+              border: none; 
+              background: #ff4d4d; 
+              color: white; 
+              font-size: 14px; 
+              cursor: pointer; 
+              border-radius: 50%; 
+              width: 24px; 
+              height: 24px;
+              text-align: center;
+              line-height: 20px;
+              font-weight: bold;
+            ">
+            ✖
+          </button>
+          <h3 style="margin-top: 0; font-size: 18px; color: white;">
+            <strong>🛰&nbsp;</strong>${satelliteName}
+          </h3>
+          <p style="margin: 5px 0; font-size: 14px;"><strong>📍 Latitude: </strong> ${latitude}</p>
+          <p style="margin: 5px 0; font-size: 14px;"><strong>📍 Longitude: </strong> ${longitude}</p>
+          <p style="margin: 5px 0; font-size: 14px;"><strong>↕️ Height: </strong> ${height.toFixed(2)} km</p> 
+          <p style="margin: 5px 0; font-size: 14px;"><strong>⏩ Speed: </strong> ${speed.toFixed(2)} km/h</p>
+        </div>
     `;
-
-    // Dynamically set the content of the popup
+  
+    // Show the popup
     const popupElement = document.getElementById('satellitePopup');
     if (popupElement) {
       popupElement.innerHTML = popupContent;
-      popupElement.style.display = 'block'; // Show the popup
-      popupElement.style.backgroundColor = 'black'; // Show the popup
+      popupElement.style.display = 'block';
+      popupElement.style.backgroundColor = 'black';
     }
   }
+  
 }
