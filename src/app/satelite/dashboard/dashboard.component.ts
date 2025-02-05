@@ -36,7 +36,7 @@ import L from 'leaflet';
 
 import { fromLonLat, toLonLat } from 'ol/proj'; // Import toLonLat
 import { Map } from 'ol'; // Import Map class
-import { pointerMove } from 'ol/events/condition';
+import { click,pointerMove } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
 import nominatim from 'nominatim-browser';
 import { ViewChild } from '@angular/core';
@@ -122,16 +122,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       controls: [new FullScreen()],
     });
 
-    // Create the Select interaction with pointerMove condition
+    // Detect if the user is on a mobile device
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+    // Create the Select interaction
     const selectInteraction = new Select({
-      condition: pointerMove, // Use pointerMove condition to track pointer movement
+      condition: isMobile ? click : pointerMove, // Use click for mobile, pointerMove for desktop
       layers: [this.vectorLayer], // Apply to vector layer
     });
 
     // Add the select interaction to the map
     this.map.addInteraction(selectInteraction);
 
-    // Add event listener for selecting a feature on pointermove
+    // Add event listener for selecting a feature
     selectInteraction.on('select', (e) => {
       const selectedFeature = e.selected[0]; // Get the first selected feature
       if (selectedFeature) {
@@ -214,6 +217,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
   }
+
 
   showFeatureInfo(feature: Feature) {
     const geometry = feature.getGeometry();
