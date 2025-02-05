@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   pageSize = 4; // Number of items per page
   //currentPage = 0;
   serverError = false;
-
+  count: number = 0;
   vectorSource: VectorSource = new VectorSource();
   vectorLayer: VectorLayer = new VectorLayer({
     source: this.vectorSource,
@@ -321,6 +321,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           // Change to 'any' to handle the response properly
           this.tleData = data.filteredData;
           this.list = data.list;
+          this.count = data.filteredData.length;
           this.isFilterPopupVisible = false;
           this.trackAllSatellites(data);
           this.isLoading = false; // Set loading to false after successful fetch
