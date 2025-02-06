@@ -91,6 +91,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   initializeMap(): void {
     const GRAVITATIONAL_PARAMETER = 398600.4418; // in km^3/s^2 (Earth's gravitational constant)
     const EARTH_RADIUS = 6371; // in km (Earth's average radius)
+    const INITIAL_ZOOM = 2.5; // Set the desired zoom level
+    const MIN_ZOOM = 0; // Lock minimum zoom
+    const MAX_ZOOM = 19; // Lock maximum zoom
 
     // Create the map
     this.map = new Map({
@@ -98,7 +101,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       view: new View({
         projection: 'EPSG:3857',
         center: [0, 0], // Adjust center
-        zoom: 2,
+        zoom: INITIAL_ZOOM,
+        minZoom: MIN_ZOOM, // Set minimum zoom
+        maxZoom: MAX_ZOOM, // Set maximum zoom
       }),
       layers: [
         new TileLayer({
@@ -109,7 +114,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           source: new XYZ({
             url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
           }),
-          opacity: 0.5,
+          opacity: 0.4,
         }),
         this.vectorLayer,
       ],

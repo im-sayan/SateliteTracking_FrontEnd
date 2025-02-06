@@ -40,11 +40,11 @@
 
     <!-- Pagination Controls -->
     <div class="pagination-controls" *ngIf="list?.length > pageSize">
-      <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
+      <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0" style="background-color: rgba(231, 229, 229, 0.678);">
         <mat-icon>chevron_left</mat-icon>
       </button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
-      <button mat-icon-button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
+      <button mat-icon-button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1" style="background-color: rgba(231, 229, 229, 0.678);">
         <mat-icon>chevron_right</mat-icon>
       </button>
     </div>
@@ -54,15 +54,11 @@
       <button mat-button color="warn" (click)="clearFilters()" style="color: rgb(211, 0, 0);">Clear All</button>
     </div>
 
-    <button mat-icon-button class="close-button" (click)="closeFilterPopup()">
+    <button mat-icon-button class="close-button" (click)="closeFilterPopup()" style="background-color: rgba(231, 229, 229, 0.678);">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 </div>
-
-
-
-
 
 
 <div class="content-container">
