@@ -95,30 +95,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const MIN_ZOOM = 0; // Lock minimum zoom
     const MAX_ZOOM = 19; // Lock maximum zoom
 
-    // Create the map
-    this.map = new Map({
-      target: 'globeContainer', // Ensure this target matches the element id
-      view: new View({
+    // Create the map view
+    const view = new View({
         projection: 'EPSG:3857',
         center: [0, 0], // Adjust center
         zoom: INITIAL_ZOOM,
         minZoom: MIN_ZOOM, // Set minimum zoom
-        maxZoom: MAX_ZOOM, // Set maximum zoom
-      }),
-      layers: [
-        new TileLayer({
-          source: new OSM(),
-          opacity: 100,
-        }),
-        new TileLayer({
-          source: new XYZ({
-            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          }),
-          opacity: 0.4,
-        }),
-        this.vectorLayer,
-      ],
-      controls: [new FullScreen()],
+        maxZoom: MAX_ZOOM,
+        rotation: 0, // Ensure the map starts with no rotation
+    });
+
+    // Create the map
+    this.map = new Map({
+        target: 'globeContainer', // Ensure this target matches the element id
+        view: view,
+        layers: [
+            new TileLayer({
+                source: new OSM(),
+                opacity: 100,
+            }),
+            new TileLayer({
+                source: new XYZ({
+                    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                }),
+                opacity: 0.4,
+            }),
+            this.vectorLayer,
+        ],
+        controls: [new FullScreen()],
     });
 
     // Detect if the user is on a mobile device
@@ -126,96 +130,102 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Create the Select interaction
     const selectInteraction = new Select({
-      condition: isMobile ? click : pointerMove, // Use click for mobile, pointerMove for desktop
-      layers: [this.vectorLayer], // Apply to vector layer
+        condition: isMobile ? click : pointerMove, // Use click for mobile, pointerMove for desktop
+        layers: [this.vectorLayer], // Apply to vector layer
     });
 
     // Add the select interaction to the map
     this.map.addInteraction(selectInteraction);
 
+    // Reset map orientation on move end (prevents unwanted rotation)
+    this.map.on('moveend', () => {
+        view.setRotation(0); // Reset rotation to 0
+    });
+
     // Add event listener for selecting a feature
     selectInteraction.on('select', (e) => {
-      const selectedFeature = e.selected[0]; // Get the first selected feature
-      if (selectedFeature) {
-        const geometry = selectedFeature.getGeometry();
-        if (geometry instanceof Point) {
-          const coordinates = geometry.getCoordinates();
-          const lonLat = fromLonLat(coordinates); // Convert to longitude/latitude
-          const satelliteName = selectedFeature.get('name'); // Get satellite name
+        const selectedFeature = e.selected[0]; // Get the first selected feature
+        if (selectedFeature) {
+            const geometry = selectedFeature.getGeometry();
+            if (geometry instanceof Point) {
+                const coordinates = geometry.getCoordinates();
+                const lonLat = fromLonLat(coordinates); // Convert to longitude/latitude
+                const satelliteName = selectedFeature.get('name'); // Get satellite name
 
-          // Use the TLE data (assuming you have it in the 'tleData' array)
-          const tleData = this.tleData.find(
-            (data) => data.name === satelliteName
-          );
-          if (tleData) {
-            // Parse TLE to get satellite information
-            const satrec = satellite.twoline2satrec(
-              tleData.tleLine1,
-              tleData.tleLine2
-            );
-
-            // Get the current position and velocity (height and speed)
-            const currentTime = new Date();
-            const positionAndVelocity = satellite.propagate(
-              satrec,
-              currentTime
-            );
-
-            if (
-              positionAndVelocity &&
-              positionAndVelocity.position &&
-              positionAndVelocity.velocity
-            ) {
-              const { position, velocity } = positionAndVelocity;
-
-              // Type guard to check if position is a valid EciVec3<number>
-              if (
-                position &&
-                typeof position === 'object' &&
-                position.x !== undefined &&
-                position.y !== undefined &&
-                position.z !== undefined
-              ) {
-                // Altitude Calculation using simplified method
-                const radialDistance = Math.sqrt(
-                  position.x * position.x +
-                    position.y * position.y +
-                    position.z * position.z
+                // Use the TLE data (assuming you have it in the 'tleData' array)
+                const tleData = this.tleData.find(
+                    (data) => data.name === satelliteName
                 );
-                const altitude = radialDistance - EARTH_RADIUS; // Subtract Earth's radius
+                if (tleData) {
+                    // Parse TLE to get satellite information
+                    const satrec = satellite.twoline2satrec(
+                        tleData.tleLine1,
+                        tleData.tleLine2
+                    );
 
-                // Speed Calculation using simplified method
-                let speed = 0;
-                if (
-                  velocity &&
-                  typeof velocity === 'object' &&
-                  velocity.x !== undefined &&
-                  velocity.y !== undefined &&
-                  velocity.z !== undefined
-                ) {
-                  speed =
-                    Math.sqrt(
-                      velocity.x * velocity.x +
-                        velocity.y * velocity.y +
-                        velocity.z * velocity.z
-                    ) * 3.6; // Convert m/s to km/h
+                    // Get the current position and velocity (height and speed)
+                    const currentTime = new Date();
+                    const positionAndVelocity = satellite.propagate(
+                        satrec,
+                        currentTime
+                    );
+
+                    if (
+                        positionAndVelocity &&
+                        positionAndVelocity.position &&
+                        positionAndVelocity.velocity
+                    ) {
+                        const { position, velocity } = positionAndVelocity;
+
+                        // Type guard to check if position is a valid EciVec3<number>
+                        if (
+                            position &&
+                            typeof position === 'object' &&
+                            position.x !== undefined &&
+                            position.y !== undefined &&
+                            position.z !== undefined
+                        ) {
+                            // Altitude Calculation using simplified method
+                            const radialDistance = Math.sqrt(
+                                position.x * position.x +
+                                    position.y * position.y +
+                                    position.z * position.z
+                            );
+                            const altitude = radialDistance - EARTH_RADIUS; // Subtract Earth's radius
+
+                            // Speed Calculation using simplified method
+                            let speed = 0;
+                            if (
+                                velocity &&
+                                typeof velocity === 'object' &&
+                                velocity.x !== undefined &&
+                                velocity.y !== undefined &&
+                                velocity.z !== undefined
+                            ) {
+                                speed =
+                                    Math.sqrt(
+                                        velocity.x * velocity.x +
+                                            velocity.y * velocity.y +
+                                            velocity.z * velocity.z
+                                    ) * 3.6; // Convert m/s to km/h
+                            }
+
+                            // Show the satellite popup with height and speed
+                            this.showSatellitePopup(lonLat, satelliteName, altitude, speed);
+                        } else {
+                            console.error('Invalid position data');
+                        }
+                    } else {
+                        console.error(
+                            'Unable to calculate position and velocity for satellite.'
+                        );
+                    }
                 }
-
-                // Show the satellite popup with height and speed
-                this.showSatellitePopup(lonLat, satelliteName, altitude, speed);
-              } else {
-                console.error('Invalid position data');
-              }
-            } else {
-              console.error(
-                'Unable to calculate position and velocity for satellite.'
-              );
             }
-          }
         }
-      }
     });
-  }
+}
+
 
   showFeatureInfo(feature: Feature) {
     const geometry = feature.getGeometry();
