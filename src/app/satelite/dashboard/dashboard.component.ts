@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private updateInterval!: Subscription;
   isNight: boolean = false;
   geolocation: Geolocation | undefined;
-  selectedSatelite: any = ['ISS (ZARYA)', 'STARLINK-1522', 'NOAA 15', 'NSS-11'];
+  selectedSatelite: any = ['ISS (ZARYA)', 'STARLINK-1522', 'NOAA 15','COSMOS 2482'];
   list: any;
   selectedFeature: Feature | null = null;
 
@@ -537,6 +537,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     let latitude = (lonLat[1]).toFixed(2); // Latitude is the second value in lonLat
     let longitude = (lonLat[0]).toFixed(2); // Longitude is the first value in lonLat
   
+    // Earth radius (in kilometers)
+    const earthRadius = 6371; 
+
+    // Calculate coverage radius (in km)
+    const coverageRadius = Math.sqrt(2 * height * earthRadius + Math.pow(height, 2)).toFixed(2);
+  
     // Popup content
     const popupContent = `
       <div>
@@ -566,6 +572,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           <p style="margin: 5px 0; font-size: 14px;"><strong>📍 Longitude: </strong> ${longitude}</p>
           <p style="margin: 5px 0; font-size: 14px;"><strong>↕️ Height: </strong> ${height.toFixed(2)} km</p> 
           <p style="margin: 5px 0; font-size: 14px;"><strong>⏩ Speed: </strong> ${speed.toFixed(2)} km/h</p>
+          <p style="margin: 5px 0; font-size: 14px;"><strong>🌍 Coverage Radius: </strong> ${coverageRadius} km</p>
         </div>
     `;
   
@@ -577,5 +584,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       popupElement.style.backgroundColor = 'black';
     }
   }
+
   
 }

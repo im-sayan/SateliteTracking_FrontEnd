@@ -15,18 +15,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2px 10px;
+    padding: 2px 15px;
     background-color: #111;  /* Darker background */
     color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);  /* Enhanced shadow */
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    max-height: 50px;
   }
   
   .nav-title {
-    font-size: 24px;
-    font-weight: 600;
-    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #13dfdf;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
+  
   
   .filter-button {
     margin-left: auto;
@@ -34,7 +39,8 @@
     background: rgba(255, 255, 255, 0.2); /* Slightly lighter background */
     border: none;
     padding: 5px 14px;
-    border-radius: 5px;
+    border-radius: 25px;
+    font-size: larger;
     transition: background 0.3s ease-in-out, transform 0.2s ease;
   }
   
@@ -44,14 +50,28 @@
   }
 
   .satellite-count {
-    font-size: 1rem;
+    font-size: 0.5rem;
     flex-grow: 1; /* Pushes content apart */
     text-align: center;
   }
 
-  .satellite-number {
-    color: #5eff00; /* Change this to your desired color */
+  .satellite-icon-count {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap:5px;
+    font-size: 1rem;
+    color: #fdfdfd;
     font-weight: bold;
+    background: rgba(51, 51, 51, 0.74);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(31, 31, 31, 0.74);
+    padding: 5px 12px;
+  }
+
+  .satellite-icon-count i {
+    font-size: 22px;
+    color: #02e3eb;
   }
   
   
@@ -285,32 +305,58 @@
   /* ==========================
      📱 Responsive Design Tweaks
      ========================== */
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      text-align: center;
+     @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        text-align: center;
+        max-height: 90px;
+      }
+    
+      /* Floating Filter Button on Map */
+      .filter-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: background 0.3s ease-in-out, transform 0.2s ease;
+        z-index: 1000; /* Ensures it's above the map */
+      }
+    
+      .filter-button:hover {
+        background: rgba(48, 47, 47, 0.87);
+        transform: scale(1.1);
+      }
+    
+      /* Ensure Satellite Popup is well placed */
+      .satellite-popup {
+        bottom: 10px;
+        left: 10px;
+        max-width: 90%;
+      }
+
+      .satellite-icon-count {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        font-size: 1rem;
+        z-index: 1000;
+      }
     }
-  
-    .filter-button {
-      width: 100%;
-      margin-top: 10px;
-    }
-  
-    .satellite-popup {
-      bottom: 10px;
-      left: 10px;
-      max-width: 90%;
-    }
-  
-    .custom-menu {
-      width: 100%;
-      max-width: 280px;
-    }
-  
-    .menu-content {
-      max-height: 180px;
-    }
-  }
   
 /* ==========================
      ⚠️ Error

@@ -1,9 +1,14 @@
 <nav class="navbar">
-  <h5 class="nav-title">Satellite Tracking</h5>
+  <h5 class="nav-title"><strong><i class="fas fa-satellite" style="font-size: x-large;"></i> Satellite Tracking</strong></h5>
 
-  <h5 class="satellite-count">
+  <!-- <h5 class="satellite-count">
     Currently [ <span class="satellite-number">{{count}}</span> ] satellites on map
-  </h5>
+  </h5> -->
+  <div class="satellite-icon-count">
+    <i class="fas fa-satellite"></i>
+    <span id="satellite-count-mobile">{{count}}</span>
+  </div>
+  
   
 
   <button (click)="openFilterPopup()" class="filter-button">
