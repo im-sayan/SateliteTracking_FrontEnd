@@ -26,48 +26,56 @@ import {
   render,
   toArray,
   withinExtentAndZ
-} from "./chunk-GD4FI7PJ.js";
+} from "./chunk-EUAHSM5E.js";
 import {
   ImageCanvas_default,
   VectorRenderTile_default,
   VectorTile_default
-} from "./chunk-3GO465IU.js";
+} from "./chunk-Y7AFJF2I.js";
+import {
+  Source_default,
+  Vector_default,
+  loadFeaturesXhr
+} from "./chunk-5NTHMBZ7.js";
 import {
   ImageTile_default,
   TileRange_default,
   Tile_default,
   createOrUpdate as createOrUpdate2
-} from "./chunk-AJCWPRKA.js";
+} from "./chunk-G2YIIDOR.js";
+import "./chunk-5K73XM64.js";
+import {
+  Layer_default as Layer_default2
+} from "./chunk-RPLNFZCX.js";
+import {
+  Feature_default
+} from "./chunk-OIN7SNNT.js";
 import {
   TileQueue_default
-} from "./chunk-SITR5SFQ.js";
+} from "./chunk-YXAXO263.js";
+import "./chunk-BDEWHVOF.js";
 import {
   TileState_default
 } from "./chunk-PWOXHWUC.js";
+import "./chunk-RE7YPHWR.js";
 import {
   Layer_default
-} from "./chunk-WEXFOBJA.js";
+} from "./chunk-65LHN5OJ.js";
 import {
-  Source_default,
-  Vector_default,
-  loadFeaturesXhr
-} from "./chunk-EDRYIJN6.js";
-import "./chunk-5K73XM64.js";
+  DEFAULT_MAX_ZOOM,
+  DEFAULT_TILE_SIZE,
+  ViewHint_default
+} from "./chunk-RM73ZCOO.js";
 import {
-  Feature_default
-} from "./chunk-TYRNN5GE.js";
-import {
-  Layer_default as Layer_default2
-} from "./chunk-GKPGQ42P.js";
+  intersectsLinearRing
+} from "./chunk-X7ORXD46.js";
 import {
   ImageState_default,
   Image_default,
   decode,
   scale as scale2,
   toSize
-} from "./chunk-5CXUNJWW.js";
-import "./chunk-BDEWHVOF.js";
-import "./chunk-RE7YPHWR.js";
+} from "./chunk-DQIKOZ7H.js";
 import {
   createCanvasContext2D
 } from "./chunk-TALNCFXE.js";
@@ -75,21 +83,13 @@ import {
   WORKER_OFFSCREEN_CANVAS
 } from "./chunk-AX5WOFAA.js";
 import {
-  DEFAULT_MAX_ZOOM,
-  DEFAULT_TILE_SIZE,
-  ViewHint_default
-} from "./chunk-GVA6PU2J.js";
-import {
-  intersectsLinearRing
-} from "./chunk-II5KOT2H.js";
-import {
   Point_default,
   apply,
   compose,
   create,
   makeInverse,
   multiply
-} from "./chunk-JDURIDCO.js";
+} from "./chunk-KHAK5BH3.js";
 import {
   METERS_PER_UNIT,
   Projection_default,
@@ -130,7 +130,7 @@ import {
   toUserExtent,
   transform,
   wrapAndSliceX
-} from "./chunk-KD5NYAAV.js";
+} from "./chunk-XXVJEHZE.js";
 import {
   ceil,
   clamp,
@@ -138,6 +138,9 @@ import {
   modulo,
   round
 } from "./chunk-UVCLGJLE.js";
+import {
+  assert
+} from "./chunk-IJQ6LSTY.js";
 import "./chunk-BPFTGO52.js";
 import {
   Disposable_default,
@@ -151,9 +154,6 @@ import {
 import {
   isEmpty
 } from "./chunk-VNWMKJWE.js";
-import {
-  assert
-} from "./chunk-IJQ6LSTY.js";
 import {
   EventType_default,
   isSorted,
@@ -10485,7 +10485,7 @@ var OSM = class extends XYZ_default {
 var OSM_default = OSM;
 
 // node_modules/ol/renderer/canvas/ImageLayer.js
-var CanvasImageLayerRenderer = class extends Layer_default {
+var CanvasImageLayerRenderer = class extends Layer_default2 {
   /**
    * @param {import("../../layer/Image.js").default} imageLayer Image layer.
    */
@@ -10632,7 +10632,7 @@ var CanvasImageLayerRenderer = class extends Layer_default {
 var ImageLayer_default = CanvasImageLayerRenderer;
 
 // node_modules/ol/layer/BaseImage.js
-var BaseImageLayer = class extends Layer_default2 {
+var BaseImageLayer = class extends Layer_default {
   /**
    * @param {Options<ImageSourceType>} [options] Layer options.
    */

@@ -1,8 +1,6 @@
 import {
   Vector_default as Vector_default2
-} from "./chunk-DUBCJMTK.js";
-import "./chunk-WEXFOBJA.js";
-import "./chunk-HM3IY3H4.js";
+} from "./chunk-WUTG3JBL.js";
 import {
   Circle_default,
   GeometryCollection_default,
@@ -13,11 +11,13 @@ import {
   RBush_default,
   VectorEventType_default,
   Vector_default
-} from "./chunk-EDRYIJN6.js";
+} from "./chunk-5NTHMBZ7.js";
 import "./chunk-5K73XM64.js";
+import "./chunk-RPLNFZCX.js";
+import "./chunk-HM3IY3H4.js";
 import {
   Feature_default
-} from "./chunk-TYRNN5GE.js";
+} from "./chunk-OIN7SNNT.js";
 import {
   DoubleClickZoom_default,
   DragBox_default,
@@ -34,26 +34,27 @@ import {
   Pointer_default,
   Property_default,
   defaults
-} from "./chunk-JX6G7I4E.js";
-import "./chunk-S7Q7BWLM.js";
-import "./chunk-GKPGQ42P.js";
-import "./chunk-GQU4XHOU.js";
-import {
-  createEditingStyle
-} from "./chunk-N4P2OMPA.js";
-import "./chunk-LSEJCB2Y.js";
-import "./chunk-655M5QKT.js";
-import "./chunk-5CXUNJWW.js";
+} from "./chunk-2LFM6E6X.js";
+import "./chunk-EJCAEL4G.js";
 import {
   CollectionEventType_default,
   Collection_default
 } from "./chunk-BDEWHVOF.js";
 import "./chunk-RE7YPHWR.js";
+import "./chunk-65LHN5OJ.js";
+import "./chunk-RM73ZCOO.js";
 import {
-  MapEventType_default
-} from "./chunk-ZO3Y5Y6G.js";
-import "./chunk-4UFEOFXY.js";
-import "./chunk-TALNCFXE.js";
+  Polygon_default,
+  fromCircle,
+  fromExtent
+} from "./chunk-X7ORXD46.js";
+import "./chunk-XW6F4VO2.js";
+import {
+  createEditingStyle
+} from "./chunk-CIN5UH7G.js";
+import "./chunk-3H5L7OAS.js";
+import "./chunk-G7RRISCD.js";
+import "./chunk-DQIKOZ7H.js";
 import {
   MapBrowserEventType_default,
   altKeyOnly,
@@ -65,17 +66,16 @@ import {
   shiftKeyOnly,
   singleClick
 } from "./chunk-4Z5KK6QB.js";
-import "./chunk-AX5WOFAA.js";
-import "./chunk-GVA6PU2J.js";
 import {
-  Polygon_default,
-  fromCircle,
-  fromExtent
-} from "./chunk-II5KOT2H.js";
+  MapEventType_default
+} from "./chunk-ZO3Y5Y6G.js";
+import "./chunk-4UFEOFXY.js";
+import "./chunk-TALNCFXE.js";
+import "./chunk-AX5WOFAA.js";
 import {
   Point_default,
   getStrideForLayout
-} from "./chunk-JDURIDCO.js";
+} from "./chunk-KHAK5BH3.js";
 import {
   boundingExtent,
   buffer,
@@ -94,12 +94,13 @@ import {
   squaredDistanceToSegment,
   toUserCoordinate,
   toUserExtent
-} from "./chunk-KD5NYAAV.js";
+} from "./chunk-XXVJEHZE.js";
 import {
   clamp,
   squaredDistance,
   toFixed
 } from "./chunk-UVCLGJLE.js";
+import "./chunk-IJQ6LSTY.js";
 import "./chunk-BPFTGO52.js";
 import {
   Event_default,
@@ -110,7 +111,6 @@ import {
 import {
   clear
 } from "./chunk-VNWMKJWE.js";
-import "./chunk-IJQ6LSTY.js";
 import {
   EventType_default,
   FALSE,

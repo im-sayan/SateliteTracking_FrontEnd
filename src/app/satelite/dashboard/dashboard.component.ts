@@ -43,6 +43,7 @@ import { ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../../ENV/env';
+
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -426,8 +427,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       satelliteFeature.setStyle(
         new Style({
           image: new Icon({
-            src: 'https://static-00.iconduck.com/assets.00/satellite-emoji-1024x1024-4mnws749.png',
-            scale: 0.02, // Slightly larger icon
+            src: 'assets/satellite-icon.png',
+            scale: 0.05, // Increased icon size for better visibility
             rotation: 0, // You can rotate it based on satellite direction
           }),
         })
@@ -527,8 +528,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // Satellite Icon (Static)
         new Style({
           image: new Icon({
-            src: 'https://static-00.iconduck.com/assets.00/satellite-emoji-1024x1024-4mnws749.png',
-            scale: 0.03,
+            src: 'assets/satellite-icon.png',
+            scale: 0.07,
             opacity: 1, // Always visible
           }),
         }),
